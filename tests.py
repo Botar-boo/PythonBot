@@ -1,8 +1,8 @@
 import unittest
-from random import randrange
 
-import main
+from random import randrange
 from sqlighter import SQLighter
+
 import crypto
 
 
