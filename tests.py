@@ -9,7 +9,6 @@ import crypto
 class TestBot(unittest.TestCase):
 
     def test_get_request(self):  # проверка подключения к сайту
-        link = 'https://www.coingecko.com/en'
         cr = crypto.Crypto()
         self.assertEqual(cr.response.ok, True)
 

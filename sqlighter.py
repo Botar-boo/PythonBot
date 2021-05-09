@@ -51,15 +51,20 @@ class SQLighter:
         with self.connection:
             result = []
             if text == 'bitcoin':
-                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `bitcoin` = 1', (user_id,)).fetchall()
+                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `bitcoin` = 1',
+                                             (user_id,)).fetchall()
             if text == 'xrp':
-                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `xrp` = 1', (user_id,)).fetchall()
+                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `xrp` = 1',
+                                             (user_id,)).fetchall()
             if text == 'ethereum':
-                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `ethereum` = 1', (user_id,)).fetchall()
+                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `ethereum` = 1',
+                                             (user_id,)).fetchall()
             if text == 'cardano':
-                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `cardano` = 1', (user_id,)).fetchall()
+                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `cardano` = 1',
+                                             (user_id,)).fetchall()
             if text == 'tether':
-                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `tether` = 1', (user_id,)).fetchall()
+                result = self.cursor.execute('SELECT * FROM `subscriptions` WHERE `user_id` = ? AND `tether` = 1',
+                                             (user_id,)).fetchall()
             return bool(len(result))
 
     # Закрываем соединение с БД
