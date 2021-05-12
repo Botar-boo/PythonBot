@@ -2,6 +2,8 @@ import re
 import requests
 
 
+name_start_point = 22
+
 # Класс, с помощью которого будем считывать данные сайта
 class Crypto:
 
@@ -20,5 +22,5 @@ class Crypto:
             # Вытаскиваем названия монет
         names = re.findall(r'coin-name" data-text=\'\w+', self.response.text)
         for i in range(len(names)):
-            names[i] = names[i][22:-1] + names[i][-1]
+            names[i] = names[i][name_start_point:-1] + names[i][-1]
         return names, prices

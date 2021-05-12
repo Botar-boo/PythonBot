@@ -3,6 +3,7 @@ import config
 import re
 
 from aiogram import Bot, Dispatcher, executor, types
+from collections import defaultdict
 from sqlighter import SQLighter
 
 from crypto import Crypto
@@ -98,16 +99,16 @@ async def print_portfolio(message: types.Message):
     global crypto_current
     crypto_current = initialize(crypto_current, True)
     # Пробегаемся по всем валютам в портфеле и выводим кол-во USD, лежащих в них
-    for i in custom_portfolio[message.from_user.id].keys():
-        if i != 'USD':
-            index = crypto_current[0].index(i)
-            ans_message += i
-            ans_message += ': ' + ("{:.2f}".format(custom_portfolio[message.from_user.id][i] *
+    for coin_name, coin_amount in custom_portfolio[message.from_user.id].items():
+        if coin_name != 'USD':
+            index = crypto_current[0].index(coin_name)
+            ans_message += coin_name
+            ans_message += ': ' + ("{:.2f}".format(coin_amount *
                                                    float(crypto_current[1][index][1:].replace(',', '')))) + '$\n'
-            total += custom_portfolio[message.from_user.id][i] * float(crypto_current[1][index][1:].replace(',', ''))
+            total += coin_amount * float(crypto_current[1][index][1:].replace(',', ''))
         else:
-            ans_message += 'USD: ' + ("{:.2f}".format(custom_portfolio[message.from_user.id][i])) + '$\n'
-            total += custom_portfolio[message.from_user.id][i]
+            ans_message += 'USD: ' + ("{:.2f}".format(coin_amount)) + '$\n'
+            total += coin_amount
     total = "{:.2f}".format(total)
     await message.answer(ans_message + 'Common: ' + total + '$')
 
@@ -125,10 +126,7 @@ async def buy_portfolio(message: types.Message):
         if float(msg_ar[2]) > custom_portfolio[message.from_user.id]['USD']:
             await message.answer('Недостаточно USD')
         else:
-            if msg_ar[1].lower() in custom_portfolio[message.from_user.id].keys():
-                custom_portfolio[message.from_user.id][msg_ar[1].lower()] += float(msg_ar[2]) / crypto_price
-            else:
-                custom_portfolio[message.from_user.id][msg_ar[1].lower()] = float(msg_ar[2]) / crypto_price
+            custom_portfolio[message.from_user.id][msg_ar[1].lower()] += float(msg_ar[2]) / crypto_price
             custom_portfolio[message.from_user.id]['USD'] -= float(msg_ar[2])
             await message.answer('Монета успешно приобретена')
     else:
@@ -166,7 +164,8 @@ async def start_portfolio(message: types.Message):
         await message.answer('Введите команду в следующем формате: /{start_game 1000},'
                              ' где 1000 - желаемое начальное вложение в USD')
     else:
-        custom_portfolio[message.from_user.id] = {'USD': float(msg_ar[1])}
+        custom_portfolio[message.from_user.id] = defaultdict(float)
+        custom_portfolio[message.from_user.id]['USD'] = float(msg_ar[1])
         await message.answer('Портфель успешно создан. Чтобы просмотреть свой портфель, пропишите /{my_portfolio}')
 
 
@@ -201,9 +200,9 @@ async def scheduled(wait_for):
             coins = [crypto_current[0].index('Bitcoin'), crypto_current[0].index('Tether'),
                      crypto_current[0].index('Ethereum'), crypto_current[0].index('Cardano'),
                      crypto_current[0].index('XRP')]
-            for i in coins:
-                message = print_coin(crypto_current, message, s, i)
-            if message != '':
+            for coin in coins:
+                message = print_coin(crypto_current, message, s, coin)
+            if message:
                 await bot.send_message(s[1], message, disable_notification=True)
 
         prev_prices = crypto_current
