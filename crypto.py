@@ -4,6 +4,7 @@ import requests
 
 name_start_point = 22
 
+
 # Класс, с помощью которого будем считывать данные сайта
 class Crypto:
 
