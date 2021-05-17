@@ -9,7 +9,8 @@ from sqlighter import SQLighter
 from crypto import Crypto
 
 # Инициализируем бота
-bot = Bot(token=config.API_TOKEN)
+TOKEN = os.getenv("token")
+bot = Bot(TOKEN)
 
 dp = Dispatcher(bot)
 
