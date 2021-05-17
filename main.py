@@ -1,5 +1,4 @@
 import asyncio
-import config
 import os
 import re
 
