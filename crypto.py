@@ -2,6 +2,7 @@ import re
 import requests
 
 
+# Номер, с которого начинается название валюты 
 name_start_point = 22
 
 
