@@ -23,5 +23,5 @@ class Crypto:
                 prices.append(numbers[i])
             # Вытаскиваем названия монет
         names = re.findall(r'coin-name" data-text=\'\w+', self.response.text)
-        names = [names[i][name_start_point:-1] + names[i][-1] for i in range(len(names))]
+        names = [name[name_start_point:-1] + name[-1] for name in names]
         return names, prices
