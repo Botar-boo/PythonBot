@@ -2,9 +2,9 @@ import psycopg2
 
 import config
 
+
 # Класс, в котором будем работать с БД
 class SQLighter:
-
 
     def __init__(self):
         # Устанавливаем connection с созданной new_db
