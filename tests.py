@@ -14,6 +14,6 @@ class TestBot(unittest.TestCase):
 
     def test_check_sub(self):  # проверка работы подписки
         user_id = randrange(100000)
-        db = SQLighter('new_db.db')
+        db = SQLighter()
         db.add_subscriber(user_id)
         self.assertEqual(db.subscriber_exists(user_id), True)
